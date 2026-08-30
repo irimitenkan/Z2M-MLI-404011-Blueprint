@@ -1,0 +1,589 @@
+blueprint:
+  name: Z2M Mueller Licht Tint Remote MLI-404011/MLI-404049 V2.0
+  description: >-
+    Zigbee2MQTT version 2.x MQTT Trigger for Mueller Licht remotes.
+    Double check in Zigbee2MQTT settings: Under Devices > Remote, activate bindings
+    (Source: Coordinator, Dest. Endpoint: 1, Cluster: genLevelCtrl, genOnOff, lightingColorCtrl).
+    Press buttons on the remote while clicking "Bind" to keep it awake.
+  domain: automation
+  input:
+    remote_topic:
+      name: Remote MQTT Topic
+      description: "friendly name MQTT-Topic of your remote (e.g. zigbee2mqtt/Zig.Remote.2)"
+      default: "zigbee2mqtt/Zig.Remote.2" # default value
+      selector:
+        text: # creates textfield in UI
+    light_group_1:
+      name: light group 1
+      default: {}
+      selector:
+        target:
+          entity:
+            domain: light
+    light_group_2:
+      name: light group 2
+      default: {}
+      selector:
+        target:
+          entity:
+            domain: light
+    light_group_3:
+      name: light group 3
+      default: {}
+      selector:
+        target:
+          entity:
+            domain: light
+    working_scene:
+      name: Working Scene
+      description: The scene to be triggered when the Working Light button is pressed - default group
+      default: []
+      selector:
+        action: {}
+    sunset_scene:
+      name: Sunset Scene
+      description: The scene 1 to be triggered when the Sunset button is pressed - default group
+      default: []
+      selector:
+        action: {}
+    party_scene:
+      name: Party Scene
+      description: The scene 2 to be triggered when the Party button is pressed - default group
+      default: []
+      selector:
+        action: {}
+    night_scene:
+      name: Night Scene
+      description: The scene to be triggered when the Night button is pressed - default group
+      default: []
+      selector:
+        action: {}
+    campfire_scene:
+      name: Campfire Scene
+      description: The scene 4 to be triggered when the Campfire button is pressed - default group
+      default: []
+      selector:
+        action: {}
+    romantic_scene:
+      name: Romantic Scene
+      description: The scene 5 to be triggered when the Romantic button is pressed - default group
+      default: []
+      selector:
+        action: {}
+    working_scene_1:
+      name: Working Scene 3 - Only Group 1 selected
+      description: The scene to be triggered when the Working Light button is pressed - group 1
+      default: []
+      selector:
+        action: {}
+    sunset_scene_1:
+      name: Sunset Scene 1 - Only Group 1 selected
+      description: The scene to be triggered when the Sunset button is pressed - group 1
+      default: []
+      selector:
+        action: {}
+    party_scene_1:
+      name: Party Scene 2 - Only Group 1 selected
+      description: The scene to be triggered when the Party button is pressed - group 1
+      default: []
+      selector:
+        action: {}
+    night_scene_1:
+      name: Night Scene 6 - Only Group 1 selected
+      description: The scene to be triggered when the Night button is pressed - group 1
+      default: []
+      selector:
+        action: {}
+    campfire_scene_1:
+      name: Campfire Scene 4 - Only Group 1 selected
+      description: The scene to be triggered when the Campfire button is pressed - group 1
+      default: []
+      selector:
+        action: {}
+    romantic_scene_1:
+      name: Romantic Scene 5 - Only Group 1 selected
+      description: The scene to be triggered when the Romantic button is pressed - group 1
+      default: []
+      selector:
+        action: {}
+    working_scene_2:
+      name: Working Scene 3 - Only Group 2 selected
+      description: The scene to be triggered when the Working Light button is pressed - group 2
+      default: []
+      selector:
+        action: {}
+    sunset_scene_2:
+      name: Sunset Scene 1 - Only Group 2 selected
+      description: The scene to be triggered when the Sunset button is pressed - group 2
+      default: []
+      selector:
+        action: {}
+    party_scene_2:
+      name: Party Scene 2 - Only Group 2 selected
+      description: The scene to be triggered when the Party button is pressed - group 2
+      default: []
+      selector:
+        action: {}
+    night_scene_2:
+      name: Night Scene 6 - Only Group 2 selected
+      description: The scene to be triggered when the Night button is pressed - group 2
+      default: []
+      selector:
+        action: {}
+    campfire_scene_2:
+      name: Campfire Scene 4 - Only Group 2 selected
+      description: The scene to be triggered when the Campfire button is pressed - group 2
+      default: []
+      selector:
+        action: {}
+    romantic_scene_2:
+      name: Romantic Scene 5 - Only Group 2 selected
+      description: The scene to be triggered when the Romantic button is pressed - group 2
+      default: []
+      selector:
+        action: {}
+    working_scene_3:
+      name: Working Scene 3 - Only Group 3 selected
+      description: The scene to be triggered when the Working Light button is pressed - group 3
+      default: []
+      selector:
+        action: {}
+    sunset_scene_3:
+      name: Sunset Scene 1 - Only Group 3 selected
+      description: The scene to be triggered when the Sunset button is pressed - group 3
+      default: []
+      selector:
+        action: {}
+    party_scene_3:
+      name: Party Scene 2 - Only Group 3 selected
+      description: The scene to be triggered when the Party button is pressed - group 3
+      default: []
+      selector:
+        action: {}
+    night_scene_3:
+      name: Night Scene 6 - Only Group 3 selected
+      description: The scene to be triggered when the Night button is pressed - group 3
+      default: []
+      selector:
+        action: {}
+    campfire_scene_3:
+      name: Campfire Scene 4 - Only Group 3 selected
+      description: The scene to be triggered when the Campfire button is pressed - group 3
+      default: []
+      selector:
+        action: {}
+    romantic_scene_3:
+      name: Romantic Scene 5 - Only Group 3 selected
+      description: The scene to be triggered when the Romantic button is pressed - group 3
+      default: []
+      selector:
+        action: {}
+mode: queued
+max: 5
+max_exceeded: silent
+trigger:
+  - alias: triggered by received MQTT-Topic of defined Tint-Remote
+    trigger: mqtt
+    topic: !input remote_topic # binding to defined field
+condition:
+  # check for valid payload in MQTT Topic
+  - condition: template
+    value_template: >-
+      {{ trigger.payload in ('off', 'on', 'color_move',
+      'color_temperature_move', 'brightness_step_down', 'brightness_step_up',
+      'brightness_move_down', 'brightness_stop', 'brightness_move_up',
+      'scene_3', 'scene_1', 'scene_2', 'scene_6', 'scene_4', 'scene_5')
+      or (trigger.payload_json is defined and trigger.payload_json.action in
+      ('off', 'on', 'color_move', 'color_temperature_move', 'brightness_step_down',
+      'brightness_step_up', 'brightness_move_down', 'brightness_stop', 'brightness_move_up',
+      'scene_3', 'scene_1', 'scene_2', 'scene_6', 'scene_4', 'scene_5')) }}
+
+action:
+- variables:
+    #group_id_0: 16387
+    group_id_1: 16388
+    group_id_2: 16389
+    group_id_3: 16390
+    input_working_scene_1:  !input 'working_scene_1'
+    input_sunset_scene_1:   !input 'sunset_scene_1'
+    input_party_scene_1:    !input 'party_scene_1'
+    input_night_scene_1:    !input 'night_scene_1'
+    input_campfire_scene_1: !input 'campfire_scene_1'
+    input_romantic_scene_1: !input 'romantic_scene_1'
+    input_working_scene_2:  !input 'working_scene_2'
+    input_sunset_scene_2:   !input 'sunset_scene_2'
+    input_party_scene_2:    !input 'party_scene_2'
+    input_night_scene_2:    !input 'night_scene_2'
+    input_campfire_scene_2: !input 'campfire_scene_2'
+    input_romantic_scene_2: !input 'romantic_scene_2'
+    input_working_scene_3:  !input 'working_scene_3'
+    input_sunset_scene_3:   !input 'sunset_scene_3'
+    input_party_scene_3:    !input 'party_scene_3'
+    input_night_scene_3:    !input 'night_scene_3'
+    input_campfire_scene_3: !input 'campfire_scene_3'
+    input_romantic_scene_3: !input 'romantic_scene_3'
+    current_group: "{{ trigger.payload_json.action_group | default(16387) | int }}"
+
+    # read payload, use RAW when no JSON
+    action: "{{ trigger.payload_json.action | default(trigger.payload) }}"
+
+- action: system_log.write
+  data:
+    level: info
+    message: >-
+      Tint Button pressed: {{ trigger.payload_json.action if (trigger.payload_json is defined and trigger.payload_json.action is defined) else trigger.payload }}
+      Group: {{ trigger.payload_json.action_group if (trigger.payload_json is defined and trigger.payload_json.action_group is defined) else '16387' }}
+      Length {{ input_working_scene_1 | length }}
+- choose:
+  - conditions:
+      # # check group id 1
+      - condition: template
+        value_template: '{{ current_group == group_id_1 }}'
+    sequence:
+      - choose:
+          # --- ON / OFF ---
+          - conditions:
+              - condition: template
+                value_template: '{{ action in ( "on", "off" ) }}'
+            sequence:
+              - action: light.turn_{{ action }}
+                data: {}
+                target: !input 'light_group_1'
+
+          # --- COLOR (RGB) ---
+          - conditions:
+              - condition: template
+                value_template: '{{ action == "color_move" }}'
+            sequence:
+              - action: light.turn_on
+                data:
+                  xy_color:
+                    - '{{ trigger.payload_json.action_color.x | float if (trigger.payload_json is defined and trigger.payload_json.action_color is defined) else 0.0 }}'
+                    - '{{ trigger.payload_json.action_color.y | float if (trigger.payload_json is defined and trigger.payload_json.action_color is defined) else 0.0 }}'
+                target: !input 'light_group_1'
+
+          # --- COLORTEMPERATURE ---
+          - conditions:
+              - condition: template
+                value_template: '{{ action == "color_temperature_move" }}'
+            sequence: []
+
+          # --- DIM  (brighter / darker) ---
+          - conditions:
+              - condition: template
+                value_template: '{{ action in ( "brightness_step_down", "brightness_step_up") }}'
+            sequence:
+              - variables:
+                  factor: '{% if action == "brightness_step_down" %} -12 {% else %} 12 {% endif %}'
+              - action: light.turn_on
+                data:
+                  brightness_step_pct: '{{ factor | int }}'
+                target: !input 'light_group_1'
+
+          # --- SCENE 1 ---
+          - conditions:
+              - condition: template
+                value_template: '{{ action == "scene_1" }}'
+            sequence:
+              - choose:
+                  - conditions:
+                      - condition: template
+                        value_template: '{{ input_sunset_scene_1 | length > 0 }}'
+                    sequence: !input 'sunset_scene_1'
+                default: !input 'sunset_scene'
+
+          # --- SCENE 2 ---
+          - conditions:
+              - condition: template
+                value_template: '{{ action == "scene_2" }}'
+            sequence:
+              - choose:
+                  - conditions:
+                      - condition: template
+                        value_template: '{{ input_party_scene_1 | length > 0 }}'
+                    sequence: !input 'party_scene_1'
+                default: !input 'party_scene'
+
+          # --- SCENE 3 ---
+          - conditions:
+              - condition: template
+                value_template: '{{ action == "scene_3" }}'
+            sequence:
+              - choose:
+                  - conditions:
+                      - condition: template
+                        value_template: '{{ input_working_scene_1 | length > 0 }}'
+                    sequence: !input 'working_scene_1'
+                default: !input 'working_scene'
+
+          # --- SCENE 4 ---
+          - conditions:
+              - condition: template
+                value_template: '{{ action == "scene_4" }}'
+            sequence:
+              - choose:
+                  - conditions:
+                      - condition: template
+                        value_template: '{{ input_campfire_scene_1 | length > 0 }}'
+                    sequence: !input 'campfire_scene_1'
+                default: !input 'campfire_scene'
+
+          # --- SCENE 5 ---
+          - conditions:
+              - condition: template
+                value_template: '{{ action == "scene_5" }}'
+            sequence:
+              - choose:
+                  - conditions:
+                      - condition: template
+                        value_template: '{{ input_romantic_scene_1 | length > 0 }}'
+                    sequence: !input 'romantic_scene_1'
+                default: !input 'romantic_scene'
+
+          # --- SCENE 6 ---
+          - conditions:
+              - condition: template
+                value_template: '{{ action == "scene_6" }}'
+            sequence:
+              - choose:
+                  - conditions:
+                      - condition: template
+                        value_template: '{{ input_night_scene_1 | length > 0 }}'
+                    sequence: !input 'night_scene_1'
+                default: !input 'night_scene'
+        default: []
+  - conditions:
+      # check group id 2
+      - condition: template
+        value_template: '{{ current_group == group_id_2 }}'
+    sequence:
+      - choose:
+          # --- ON / OFF ---
+          - conditions:
+              - condition: template
+                value_template: '{{ action in ( "on", "off" ) }}'
+            sequence:
+              - action: light.turn_{{ action }}
+                data: {}
+                target: !input 'light_group_2'
+
+          # --- COLOR (RGB) ---
+          - conditions:
+              - condition: template
+                value_template: '{{ action == "color_move" }}'
+            sequence:
+              - action: light.turn_on
+                data:
+                  xy_color:
+                    - '{{ trigger.payload_json.action_color.x | float if (trigger.payload_json is defined and trigger.payload_json.action_color is defined) else 0.0 }}'
+                    - '{{ trigger.payload_json.action_color.y | float if (trigger.payload_json is defined and trigger.payload_json.action_color is defined) else 0.0 }}'
+                target: !input 'light_group_2'
+
+          # --- COLORTEMPERATURE ---
+          - conditions:
+              - condition: template
+                value_template: '{{ action == "color_temperature_move" }}'
+            sequence: []
+
+          # --- DIM  (brighter / darker) ---
+          - conditions:
+              - condition: template
+                value_template: '{{ action in ( "brightness_step_down", "brightness_step_up") }}'
+            sequence:
+              - variables:
+                  factor: '{% if action == "brightness_step_down" %} -12 {% else %} 12 {% endif %}'
+              - action: light.turn_on
+                data:
+                  brightness_step_pct: '{{ factor | int }}'
+                target: !input 'light_group_2'
+
+          # --- SCENE 1 ---
+          - conditions:
+              - condition: template
+                value_template: '{{ action == "scene_1" }}'
+            sequence:
+              - choose:
+                  - conditions:
+                      - condition: template
+                        value_template: '{{ input_sunset_scene_2 | length > 0 }}'
+                    sequence: !input 'sunset_scene_2'
+                default: !input 'sunset_scene'
+
+          # --- SCENE 2 ---
+          - conditions:
+              - condition: template
+                value_template: '{{ action == "scene_2" }}'
+            sequence:
+              - choose:
+                  - conditions:
+                      - condition: template
+                        value_template: '{{ input_party_scene_2 | length > 0 }}'
+                    sequence: !input 'party_scene_2'
+                default: !input 'party_scene'
+
+          # --- SCENE 3 ---
+          - conditions:
+              - condition: template
+                value_template: '{{ action == "scene_3" }}'
+            sequence:
+              - choose:
+                  - conditions:
+                      - condition: template
+                        value_template: '{{ input_working_scene_2 | length > 0 }}'
+                    sequence: !input 'working_scene_2'
+                default: !input 'working_scene'
+
+          # --- SCENE 4 ---
+          - conditions:
+              - condition: template
+                value_template: '{{ action == "scene_4" }}'
+            sequence:
+              - choose:
+                  - conditions:
+                      - condition: template
+                        value_template: '{{ input_campfire_scene_2 | length > 0 }}'
+                    sequence: !input 'campfire_scene_2'
+                default: !input 'campfire_scene'
+
+          # --- SCENE 5 ---
+          - conditions:
+              - condition: template
+                value_template: '{{ action == "scene_5" }}'
+            sequence:
+              - choose:
+                  - conditions:
+                      - condition: template
+                        value_template: '{{ input_romantic_scene_2 | length > 0 }}'
+                    sequence: !input 'romantic_scene_2'
+                default: !input 'romantic_scene'
+
+          # --- SCENE 6 ---
+          - conditions:
+              - condition: template
+                value_template: '{{ action == "scene_6" }}'
+            sequence:
+              - choose:
+                  - conditions:
+                      - condition: template
+                        value_template: '{{ input_night_scene_2 | length > 0 }}'
+                    sequence: !input 'night_scene_2'
+                default: !input 'night_scene'
+        default: []
+  - conditions:
+      # check group id 3
+      - condition: template
+        value_template: '{{ current_group == group_id_3 }}'
+    sequence:
+      - choose:
+          # --- ON / OFF ---
+          - conditions:
+              - condition: template
+                value_template: '{{ action in ( "on", "off" ) }}'
+            sequence:
+              - action: light.turn_{{ action }}
+                data: {}
+                target: !input 'light_group_3'
+
+          # --- COLOR (RGB) ---
+          - conditions:
+              - condition: template
+                value_template: '{{ action == "color_move" }}'
+            sequence:
+              - action: light.turn_on
+                data:
+                  xy_color:
+                    - '{{ trigger.payload_json.action_color.x | float if (trigger.payload_json is defined and trigger.payload_json.action_color is defined) else 0.0 }}'
+                    - '{{ trigger.payload_json.action_color.y | float if (trigger.payload_json is defined and trigger.payload_json.action_color is defined) else 0.0 }}'
+                target: !input 'light_group_3'
+
+          # --- COLORTEMPERATURE ---
+          - conditions:
+              - condition: template
+                value_template: '{{ action == "color_temperature_move" }}'
+            sequence: []
+
+          # --- DIM  (brighter / darker) ---
+          - conditions:
+              - condition: template
+                value_template: '{{ action in ( "brightness_step_down", "brightness_step_up") }}'
+            sequence:
+              - variables:
+                  factor: '{% if action == "brightness_step_down" %} -12 {% else %} 12 {% endif %}'
+              - action: light.turn_on
+                data:
+                  brightness_step_pct: '{{ factor | int }}'
+                target: !input 'light_group_3'
+
+          # --- SCENE 1 ---
+          - conditions:
+              - condition: template
+                value_template: '{{ action == "scene_1" }}'
+            sequence:
+              - choose:
+                  - conditions:
+                      - condition: template
+                        value_template: '{{ input_sunset_scene_3 | length > 0 }}'
+                    sequence: !input 'sunset_scene_3'
+                default: !input 'sunset_scene'
+
+          # --- SCENE 2 ---
+          - conditions:
+              - condition: template
+                value_template: '{{ action == "scene_2" }}'
+            sequence:
+              - choose:
+                  - conditions:
+                      - condition: template
+                        value_template: '{{ input_party_scene_3 | length > 0 }}'
+                    sequence: !input 'party_scene_3'
+                default: !input 'party_scene'
+
+          # --- SCENE 3 ---
+          - conditions:
+              - condition: template
+                value_template: '{{ action == "scene_3" }}'
+            sequence:
+              - choose:
+                  - conditions:
+                      - condition: template
+                        value_template: '{{ input_working_scene_3 | length > 0 }}'
+                    sequence: !input 'working_scene_3'
+                default: !input 'working_scene'
+
+          # --- SCENE 4 ---
+          - conditions:
+              - condition: template
+                value_template: '{{ action == "scene_4" }}'
+            sequence:
+              - choose:
+                  - conditions:
+                      - condition: template
+                        value_template: '{{ input_campfire_scene_3 | length > 0 }}'
+                    sequence: !input 'campfire_scene_3'
+                default: !input 'campfire_scene'
+
+          # --- SCENE 5 ---
+          - conditions:
+              - condition: template
+                value_template: '{{ action == "scene_5" }}'
+            sequence:
+              - choose:
+                  - conditions:
+                      - condition: template
+                        value_template: '{{ input_romantic_scene_3 | length > 0 }}'
+                    sequence: !input 'romantic_scene_3'
+                default: !input 'romantic_scene'
+
+          # --- SCENE 6 ---
+          - conditions:
+              - condition: template
+                value_template: '{{ action == "scene_6" }}'
+            sequence:
+              - choose:
+                  - conditions:
+                      - condition: template
+                        value_template: '{{ input_night_scene_3 | length > 0 }}'
+                    sequence: !input 'night_scene_3'
+                default: !input 'night_scene'
+        default: []
+  default: []
