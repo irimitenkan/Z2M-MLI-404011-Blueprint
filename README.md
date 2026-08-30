@@ -1,6 +1,6 @@
 # Z2M-MLI-404011-Blueprint
 
-Home Assistant Blueprint for Müller-Licht Remote to compatible with Zigbee2MQTT v2.x
+Home Assistant Blueprint for Müller-Licht Remote compatible with Zigbee2MQTT v2.x
 
 ## Important Note
 Double check the bindings of your remote in Zigbee2MQTT,in column "Cluster" genLevelCtrl, genOnOff, lightingColorCtrl must be available. If not, enter settings:
